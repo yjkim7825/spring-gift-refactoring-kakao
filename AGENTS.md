@@ -11,3 +11,7 @@
 - 요청받지 않은 변경은 하지 않는다. 필요해 보이면 멈추고 묻는다.
 - 서비스에 `@Transactional`을 붙이지 않는다([안건 #5](docs/agenda.md#고칠지-정할-동작)).
 - 안건이나 모순의 근거인 코드는 그 안건이 정해질 때까지 지우지 않는다.
+
+## 확인 명령
+
+- 커밋 전에 `./gradlew check`(Windows는 `gradlew.bat check`)가 통과해야 한다. 인수 테스트와 Checkstyle을 함께 실행한다.
