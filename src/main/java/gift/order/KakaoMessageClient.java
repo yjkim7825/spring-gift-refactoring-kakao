@@ -1,6 +1,8 @@
 package gift.order;
 
 import gift.product.Product;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestClient;
@@ -21,8 +23,8 @@ public class KakaoMessageClient {
 
         restClient.post()
             .uri("https://kapi.kakao.com/v2/api/talk/memo/default/send")
-            .header("Authorization", "Bearer " + accessToken)
-            .header("Content-Type", "application/x-www-form-urlencoded")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .body(params)
             .retrieve()
             .toBodilessEntity();

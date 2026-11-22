@@ -9,6 +9,7 @@ import gift.wish.WishRepository;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +49,7 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<Page<OrderResponse>> getOrders(
-        @RequestHeader("Authorization") String authorization,
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
         Pageable pageable
     ) {
         // auth check
@@ -70,7 +71,7 @@ public class OrderController {
     // 7. send kakao notification
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(
-        @RequestHeader("Authorization") String authorization,
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
         @Valid @RequestBody OrderRequest request
     ) {
         // auth check

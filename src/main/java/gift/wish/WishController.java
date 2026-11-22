@@ -5,6 +5,7 @@ import gift.product.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +38,7 @@ public class WishController {
 
     @GetMapping
     public ResponseEntity<Page<WishResponse>> getWishes(
-        @RequestHeader("Authorization") String authorization,
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
         Pageable pageable
     ) {
         // check auth
@@ -51,7 +52,7 @@ public class WishController {
 
     @PostMapping
     public ResponseEntity<WishResponse> addWish(
-        @RequestHeader("Authorization") String authorization,
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
         @Valid @RequestBody WishRequest request
     ) {
         // check auth
@@ -79,7 +80,7 @@ public class WishController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeWish(
-        @RequestHeader("Authorization") String authorization,
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
         @PathVariable Long id
     ) {
         // check auth
