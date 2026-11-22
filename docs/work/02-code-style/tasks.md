@@ -1,22 +1,22 @@
 # 2단계. 코드 모양 맞추기 작업 목록
 
-작업 전에 작성함. [리팩터링 계획](../README.md)의 2단계를 커밋 하나 크기로 나눴다.
+작업 전에 작성하고, 2단계를 마친 뒤 상태와 결과를 채웠다. [리팩터링 계획](../README.md)의 2단계를 커밋 하나 크기로 나눴다.
 
 ## 작업 목록
 
 모든 항목은 컴파일하면 같은 프로그램이 되거나, 같은 값을 다른 이름으로 쓰는 변경이다. 회원, 손님, 관리자가 겪는 동작은 바뀌지 않는다.
 
-| 순서 | #   | 할 일                                                                                        | 대상               | 도구                | 상태  |
-| ---- | --- | -------------------------------------------------------------------------------------------- | ------------------ | ------------------- | ----- |
-| 1    | S1  | 부품을 연결하는 표시 중 필요 없는 것을 뺀다                                                  | 4곳                | 손으로, 검사로 확인 | 할 일 |
-| 2    | S3  | 주소를 적는 방식을 짧은 쪽으로 맞춘다                                                        | 5곳                | 일괄 치환           | 할 일 |
-| 3    | S4  | 목록을 만드는 방식을 나머지와 같게 맞춘다                                                    | 1곳                | 손으로              | 할 일 |
-| 4    | S5  | 응답 결과를 숫자 대신 이름으로 적는다                                                        | 6곳                | 일괄 치환           | 할 일 |
-| 5    | S6  | 주문의 응답 종류를 다른 기능처럼 적는다                                                      | 2곳                | 손으로              | 할 일 |
-| 6    | S8  | 로그인 정보와 보내는 내용의 형식을 알리는 이름을 미리 정의된 이름으로 쓴다                   | 9곳                | 일괄 치환           | 할 일 |
-| 7    | S2  | 변수의 종류를 직접 적는 방식으로 맞춘다                                                      | 30곳               | IDE 검사            | 할 일 |
-| 8    | S7  | 파일 앞 설명 주석에서 작성자 표시와 이름만 되풀이하는 설명을 빼고, 규칙 설명은 형식을 맞춘다 | 11개 파일          | 손으로              | 할 일 |
-| 9    | S10 | 이번에 정한 모양 중 검사할 수 있는 것을 검사 도구로 고정한다                                 | 규칙은 그때 정한다 | Checkstyle          | 할 일 |
+| 순서 | #   | 할 일                                                                                        | 대상      | 도구                          | 상태           |
+| ---- | --- | -------------------------------------------------------------------------------------------- | --------- | ----------------------------- | -------------- |
+| 1    | S1  | 부품을 연결하는 표시 중 필요 없는 것을 뺀다                                                  | 4곳       | 손으로, 검사로 확인           | 완료 `89ea2ac` |
+| 2    | S3  | 주소를 적는 방식을 짧은 쪽으로 맞춘다                                                        | 5곳       | 일괄 치환                     | 완료 `69bfd37` |
+| 3    | S4  | 목록을 만드는 방식을 나머지와 같게 맞춘다                                                    | 1곳       | 손으로                        | 완료 `700e1ca` |
+| 4    | S5  | 응답 결과를 숫자 대신 이름으로 적는다                                                        | 6곳       | 일괄 치환                     | 완료 `f963554` |
+| 5    | S6  | 주문의 응답 종류를 다른 기능처럼 적는다                                                      | 2곳       | 손으로                        | 완료 `4be9f4d` |
+| 6    | S8  | 로그인 정보와 보내는 내용의 형식을 알리는 이름을 미리 정의된 이름으로 쓴다                   | 9곳       | 일괄 치환                     | 완료 `e71ffb1` |
+| 7    | S2  | 변수의 종류를 직접 적는 방식으로 맞춘다                                                      | 30곳      | 손으로 (컴파일러로 타입 확인) | 완료 `df68a16` |
+| 8    | S7  | 파일 앞 설명 주석에서 작성자 표시와 이름만 되풀이하는 설명을 빼고, 규칙 설명은 형식을 맞춘다 | 11개 파일 | 일괄 치환 (`sed` 두 줄)       | 완료 `b7f3b56` |
+| 9    | S10 | 이번에 정한 모양 중 검사할 수 있는 것을 검사 도구로 고정한다                                 | 규칙 9개  | Checkstyle                    | 완료 `449af85` |
 
 S9(상품명과 옵션명 검사를 부르는 코드의 중복)는 3단계에서 처리한다.
 
@@ -136,7 +136,7 @@ sed -i 's/"Content-Type", "application\/x-www-form-urlencoded"/HttpHeaders.CONTE
 - 더할 import: `OrderController`에 `gift.product.Product`, `org.springframework.data.domain.Page`(S6에서 이미 더했으면 생략), `WishController`에 `gift.member.Member`, `gift.product.Product`, `org.springframework.data.domain.Page`(이미 있음), `gift.wish.Wish`는 같은 패키지라 필요 없다.
 - 동작: `var`는 컴파일 때 같은 타입으로 바뀌므로 바이트코드가 같다. 새 import는 소스 표기만 늘린다. 클래스 사이 의존은 바이트코드에 이미 있으므로 4단계 ArchUnit 결과도 같다.
 - 타입은 오른쪽 식의 타입을 그대로 쓴다. 예를 들어 `new LinkedMultiValueMap<String, String>()`을 `MultiValueMap`으로 넓히지 않는다.
-- 도구: IntelliJ 의도 동작 "Replace 'var' with explicit type"과 검사 "Unnecessary 'final' on local variable or parameter"(둘 다 확인 필요). 쓸 수 없으면 손으로 고친다.
+- 도구: 손으로 고친다. 고치기 전과 후의 클래스 파일을 `javap -c -l -p`로 비교해, 줄 번호 말고는 바이트코드와 지역 변수 타입 표(LocalVariableTable)가 같은지 컴파일러 결과로 확인한다.
 - 검사: `grep -rnE "^\s+var " src/main/java`, `grep -rnE "^\s{8,}final \w" src/main/java`
 
 ### 8. S7 클래스 설명 주석
@@ -161,16 +161,32 @@ sed -i 's/"Content-Type", "application\/x-www-form-urlencoded"/HttpHeaders.CONTE
 - `OptionController`의 "Each product must have at least one option at all times."는 [안건 #3](../../agenda.md#고칠지-정할-동작)과 모순 M-1의 근거다. 문장을 바꾸거나 지우지 않는다.
 - Javadoc으로 바꾸면 `KakaoAuthController`, `OptionNameValidator`의 목록 줄이 Javadoc 도구에서 한 문단으로 이어 보일 수 있다. 소스에서 읽는 모양은 같고 동작에는 영향이 없어 그대로 둔다.
 - 주석이 없는 클래스에 새로 달지 않는다.
-- 도구: 손으로 고친다.
+- 도구: 계획은 손으로 고치는 것이었지만, 기계적인 작업이라 `sed` 두 줄로 고쳤다. 0열에서 시작하는 Javadoc 블록을 통째로 지우고(8개), 0열의 일반 블록 주석 시작 기호를 Javadoc 시작 기호로 바꿨다(3개). 들여쓴 메서드 Javadoc은 패턴에 걸리지 않는다. 남긴 3개는 바꾸기 전 원문과 첫 줄 말고는 같은지 줄 단위로 비교했다.
 - 검사: `grep -rn "@author\|@since" src/main/java`, `grep -rnE "^/\*([^*]|$)" src/main/java`
 
 ### 9. S10 Checkstyle로 모양 고정
 
-- 커밋 메시지: 넣을 규칙을 정한 뒤 정한다.
-- 할 일: `build.gradle.kts`에 Gradle `checkstyle` 플러그인과 설정 파일을 더하고, S1부터 S8까지 정한 모양 중 Checkstyle로 검사할 수 있는 것만 규칙으로 넣는다.
-- 진행: 시작할 때 S1부터 S8 각각을 Checkstyle로 검사할 수 있는지와 해당 검사 모듈을 목록으로 보여 주고, 넣을 규칙을 물어서 정한다.
-- 확인: 2단계를 마친 코드에서 `gradlew checkstyleMain`이 통과하고, 규칙을 일부러 어긴 코드에서는 실패한다.
-- 빌드 파일을 바꾸는 항목이라, 다른 항목처럼 커밋 하나로 따로 둔다.
+- 커밋 메시지: `build: add Checkstyle rules for step 2 code style`
+- 넣은 것: `build.gradle.kts`에 `checkstyle` 플러그인(도구 버전 10.17.0, `maxWarnings = 0`)과 `config/checkstyle/checkstyle.xml`. `checkstyleTest`는 끄고 `src/main`만 검사한다.
+- 규칙: S1부터 S8까지 8개를 모두 골랐다. S2는 두 규칙이라 모두 9개다.
+
+| 규칙 ID                 | 모듈                   | 다시 생기기 쉬운지 |
+| ----------------------- | ---------------------- | ------------------ |
+| `S1-noAutowired`        | `IllegalImport`        | 높음               |
+| `S2-noVar`              | `MatchXpath`           | 높음               |
+| `S2-noLocalFinal`       | `MatchXpath`           | 높음               |
+| `S3-noPathAttribute`    | `RegexpSinglelineJava` | 낮음               |
+| `S4-noCollectorsToList` | `RegexpSinglelineJava` | 중간               |
+| `S5-noNumericStatus`    | `RegexpSinglelineJava` | 중간               |
+| `S6-noWildcardResponse` | `RegexpSinglelineJava` | 낮음               |
+| `S7-noAuthorTags`       | `RegexpSinglelineJava` | 중간               |
+| `S8-noHeaderLiterals`   | `IllegalTokenText`     | 높음               |
+
+- 검사할 수 없어 넣지 않은 것: S7의 "이름만 되풀이하는 설명 금지"는 판단이 필요하다. `"Bearer "`는 4단계 결정 전이라 넣지 않았다.
+- 한계: S1은 import만 본다. `@org.springframework...Autowired`처럼 전체 이름으로 쓰면 걸리지 않는다. S3부터 S6은 한 줄 정규식이라, 여러 줄에 나눠 쓰면 걸리지 않을 수 있다.
+- 확인: 규칙마다 위반 하나만 든 임시 파일 `src/main/java/gift/CheckstyleProbe.java`를 만들고 `gradlew checkstyleMain`을 실행한 뒤 바로 지웠다. 9개 모두 `checkstyleMain` 단계에서 실패했고, 보고서에 그 규칙 ID 하나만 1건 나왔다. 임시 파일을 지운 뒤에는 41개 파일, 오류 0건으로 통과한다. `checkstyleTest`는 `SKIPPED`다.
+- 확인하다 생긴 일: 처음 돌렸을 때 S3 임시 파일에 `GetMapping` import가 없어 `compileJava`에서 실패했다. `checkstyleMain`은 컴파일 뒤에 돌기 때문에 Checkstyle은 실행되지 않았고, 이전 실행의 보고서를 읽어 엉뚱한 결과가 나왔다. 임시 파일을 컴파일되게 고치고, 실행 전에 보고서를 지우고, 실패한 단계가 `checkstyleMain`인지까지 확인하는 방식으로 9개를 모두 다시 확인했다.
+- 실행: Checkstyle은 `gradlew test`에서는 돌지 않는다. `gradlew checkstyleMain`, `gradlew check`, `gradlew build`에서 돈다.
 
 ### 테스트
 
