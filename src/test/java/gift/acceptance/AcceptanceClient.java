@@ -28,6 +28,15 @@ public class AcceptanceClient {
         return single(JsonPath.read(options, "$[?(@.name == '" + optionName + "')].id"));
     }
 
+    public long categoryId(String categoryName) {
+        String categories = restTemplate.getForObject("/api/categories", String.class);
+        return single(JsonPath.read(categories, "$[?(@.name == '" + categoryName + "')].id"));
+    }
+
+    public List<String> productNames() {
+        return JsonPath.read(restTemplate.getForObject("/api/products?size=100", String.class), "$.content[*].name");
+    }
+
     private long single(List<Number> ids) {
         assertThat(ids).hasSize(1);
         return ids.get(0).longValue();
