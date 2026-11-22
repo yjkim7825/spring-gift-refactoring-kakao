@@ -6,6 +6,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
     id("org.flywaydb.flyway") version "12.0.1"
+    checkstyle
 }
 
 group = "camp.nextstep.edu"
@@ -60,6 +61,16 @@ allOpen {
 
 ktlint {
     verbose.set(true)
+}
+
+checkstyle {
+    toolVersion = "10.17.0"
+    configFile = file("config/checkstyle/checkstyle.xml")
+    maxWarnings = 0
+}
+
+tasks.named("checkstyleTest") {
+    enabled = false
 }
 
 tasks.withType<Test> {

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<!--
+    Keeps the step 2 code style (docs/work/02-code-style/tasks.md).
+    Applies to src/main only; checkstyleTest is disabled in build.gradle.kts.
+-->
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="severity" value="error"/>
+
+    <module name="TreeWalker">
+        <!-- S1: constructor injection without @Autowired, no field injection -->
+        <module name="IllegalImport">
+            <property name="id" value="S1-noAutowired"/>
+            <property name="illegalPkgs" value=""/>
+            <property name="illegalClasses" value="org.springframework.beans.factory.annotation.Autowired"/>
+            <message key="import.illegal" value="S1: do not use @Autowired; inject through the only constructor."/>
+        </module>
+
+        <!-- S2: explicit local variable types -->
+        <module name="MatchXpath">
+            <property name="id" value="S2-noVar"/>
+            <property name="query" value="//VARIABLE_DEF[./TYPE/IDENT[@text='var']]"/>
+            <message key="matchxpath.match" value="S2: write the explicit type instead of var."/>
+        </module>
+
+        <!-- S2: no final on local variables (fields keep final) -->
+        <module name="MatchXpath">
+            <property name="id" value="S2-noLocalFinal"/>
+            <property name="query" value="//VARIABLE_DEF[./MODIFIERS/FINAL and not(parent::OBJBLOCK)]"/>
+            <message key="matchxpath.match" value="S2: do not mark local variables final."/>
+        </module>
+
+        <!-- S3: @GetMapping("/x"), not @GetMapping(path = "/x") -->
+        <module name="RegexpSinglelineJava">
+            <property name="id" value="S3-noPathAttribute"/>
+            <property name="format" value="Mapping\(\s*path\s*="/>
+            <property name="ignoreComments" value="true"/>
+            <property name="message" value="S3: drop the path = attribute name in request mappings."/>
+        </module>
+
+        <!-- S4: Stream.toList() -->
+        <module name="RegexpSinglelineJava">
+            <property name="id" value="S4-noCollectorsToList"/>
+            <property name="format" value="Collectors\.toList\(\)"/>
+            <property name="ignoreComments" value="true"/>
+            <property name="message" value="S4: use Stream.toList() instead of Collectors.toList()."/>
+        </module>
+
+        <!-- S5: HttpStatus constants -->
+        <module name="RegexpSinglelineJava">
+            <property name="id" value="S5-noNumericStatus"/>
+            <property name="format" value="\.status\(\s*\d+\s*\)"/>
+            <property name="ignoreComments" value="true"/>
+            <property name="message" value="S5: use HttpStatus constants instead of numeric status codes."/>
+        </module>
+
+        <!-- S6: declared response types -->
+        <module name="RegexpSinglelineJava">
+            <property name="id" value="S6-noWildcardResponse"/>
+            <property name="format" value="ResponseEntity&lt;\s*\?\s*&gt;"/>
+            <property name="ignoreComments" value="true"/>
+            <property name="message" value="S6: declare the response body type instead of ResponseEntity&lt;?&gt;."/>
+        </module>
+
+        <!-- S7: no author or since tags (checks comments too) -->
+        <module name="RegexpSinglelineJava">
+            <property name="id" value="S7-noAuthorTags"/>
+            <property name="format" value="@(author|since)\b"/>
+            <property name="ignoreComments" value="false"/>
+            <property name="message" value="S7: do not add @author or @since tags."/>
+        </module>
+
+        <!-- S8: Spring constants for header names and values ("Bearer " is left for step 4) -->
+        <module name="IllegalTokenText">
+            <property name="id" value="S8-noHeaderLiterals"/>
+            <property name="tokens" value="STRING_LITERAL"/>
+            <property name="format" value="^&quot;(Authorization|Content-Type|application/x-www-form-urlencoded)&quot;$"/>
+            <property name="message" value="S8: use HttpHeaders or MediaType constants for header names and values."/>
+        </module>
+    </module>
+</module>
