@@ -27,17 +27,17 @@
 
 같은 일을 곳마다 다르게 쓴 부분을 한 가지로 맞춘다. 동작에는 영향이 없다.
 
-| #   | 다르게 쓴 부분                                              | 맞추는 방향                             |
-| --- | ----------------------------------------------------------- | --------------------------------------- |
-| S1  | 부품을 연결하는 표시를 일부 파일에만 붙였다                 | 필요 없으므로 모두 뺀다                 |
-| S2  | 변수 종류를 적는 방식이 세 가지로 섞여 있다                 | 변수의 종류를 직접 적는 방식으로 맞춘다 |
-| S3  | 주소를 적는 방식이 두 가지로 섞여 있다                      | 짧은 쪽으로 맞춘다                      |
-| S4  | 목록을 만드는 방식이 한 곳만 다르다                         | 나머지와 같게 맞춘다                    |
-| S5  | 응답 결과를 숫자로 적은 곳과 이름으로 적은 곳이 있다        | 이름으로 맞춘다                         |
-| S6  | 주문만 응답의 종류를 적지 않았다                            | 다른 기능처럼 적는다                    |
-| S7  | 파일 앞 설명 주석의 형식이 세 가지다                        | 일반 설명 주석 형식으로 맞춘다          |
-| S8  | 로그인 정보를 담는 이름을 글자로 직접 쓴 곳이 있다          | 미리 정의된 이름으로 맞춘다             |
-| S9  | 상품명 검사와 옵션명 검사를 부르는 코드가 똑같이 두 번 있다 | 3단계에서 한곳으로 옮긴다               |
+| #   | 다르게 쓴 부분                                                   | 맞추는 방향                                                                        |
+| --- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| S1  | 부품을 연결하는 표시를 일부 파일에만 붙였다                      | 필요 없으므로 모두 뺀다                                                            |
+| S2  | 변수 종류를 적는 방식이 세 가지로 섞여 있다                      | 변수의 종류를 직접 적는 방식으로 맞춘다                                            |
+| S3  | 주소를 적는 방식이 두 가지로 섞여 있다                           | 짧은 쪽으로 맞춘다                                                                 |
+| S4  | 목록을 만드는 방식이 한 곳만 다르다                              | 나머지와 같게 맞춘다                                                               |
+| S5  | 응답 결과를 숫자로 적은 곳과 이름으로 적은 곳이 있다             | 이름으로 맞춘다                                                                    |
+| S6  | 주문만 응답의 종류를 적지 않았다                                 | 다른 기능처럼 적는다                                                               |
+| S7  | 파일 앞 설명 주석의 형식이 세 가지다                             | 이름만 되풀이하는 설명과 작성자 표시를 빼고, 규칙 설명은 문서 주석 형식으로 맞춘다 |
+| S8  | 로그인 정보와 내용 형식을 알리는 이름을 글자로 직접 쓴 곳이 있다 | 미리 정의된 이름으로 맞춘다                                                        |
+| S9  | 상품명 검사와 옵션명 검사를 부르는 코드가 똑같이 두 번 있다      | 3단계에서 한곳으로 옮긴다                                                          |
 
 ### 3. 규칙을 한곳으로 모으기
 
@@ -73,7 +73,7 @@
 | 단계 | 할 일                  | 끝났다고 보는 기준                                             | 기록                                       | 상태                 |
 | ---- | ---------------------- | -------------------------------------------------------------- | ------------------------------------------ | -------------------- |
 | 1    | 쓰이지 않는 코드 정리  | 모든 테스트가 통과한다                                         | [01-unused-code](01-unused-code/README.md) | 완료, D1과 D2는 보류 |
-| 2    | 코드 모양 맞추기       | 모든 테스트가 통과한다                                         | 02-code-style                              | 할 일                |
+| 2    | 코드 모양 맞추기       | 모든 테스트가 통과한다                                         | [02-code-style](02-code-style/tasks.md)    | 작업 목록 작성       |
 | 3    | 규칙을 한곳으로 모으기 | 옮기기 전에 그 기능의 인수 테스트가 있고, 옮긴 뒤에도 통과한다 | 03-service-layer                           | 할 일                |
 | 4    | 구조 규칙 고정         | 구조 테스트가 통과하고, 규칙을 일부러 어기면 실패한다          | 04-arch-rules                              | 할 일                |
 
@@ -118,17 +118,17 @@
 
 ### 2단계 대상 코드
 
-| #   | 지금 코드                                                                                                                                                     | 맞추는 방향                                                                                                                                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| S1  | 생성자의 `@Autowired`가 `MemberController`, `AdminMemberController`, `AuthenticationResolver`, `JwtProvider`에만 있다                                         | 생성자가 하나라 필요 없으므로 뺀다                                                                                                                     |
-| S2  | `OrderController`, `WishController`, `KakaoMessageClient`는 `var`, member와 auth는 `final String`, 나머지는 명시 타입이다                                     | `var`와 `final`을 빼고 명시 타입으로 쓴다                                                                                                              |
-| S3  | `KakaoAuthController`, `OptionController`는 `@RequestMapping(path = "...")`, `@GetMapping(path = "...")`를 쓴다                                               | `path =` 없이 쓴다                                                                                                                                     |
-| S4  | `OptionController.getOptions`만 `.collect(Collectors.toList())`를 쓴다                                                                                        | `.toList()`                                                                                                                                            |
-| S5  | `ResponseEntity.status(401)`, `status(403)`                                                                                                                   | `HttpStatus.UNAUTHORIZED`, `HttpStatus.FORBIDDEN`                                                                                                      |
-| S6  | `OrderController`의 반환 타입이 `ResponseEntity<?>`다                                                                                                         | `ResponseEntity<Page<OrderResponse>>`, `ResponseEntity<OrderResponse>`                                                                                 |
-| S7  | member와 auth는 Javadoc에 `@author brian.kim`, `@since 1.0`을 적고, `KakaoAuthController`, `OptionController`, `OptionNameValidator`는 `/* */`, 나머지는 없다 | 클래스 위 Javadoc 8곳을 `/* */`로 바꾸고 `@author`, `@since`는 뺀다. 주석이 없는 클래스에 새로 달지 않고, `JwtProvider`의 메서드 Javadoc은 그대로 둔다 |
-| S8  | `"Authorization"`, `"Bearer "`를 문자열로 쓴다                                                                                                                | `HttpHeaders.AUTHORIZATION`                                                                                                                            |
-| S9  | `ProductController.validateName`과 `OptionController.validateName`이 같은 모양이다                                                                            | 각 Service로 옮긴다                                                                                                                                    |
+| #   | 지금 코드                                                                                                                                                     | 맞추는 방향                                                                                                                                                                                           |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S1  | 생성자의 `@Autowired`가 `MemberController`, `AdminMemberController`, `AuthenticationResolver`, `JwtProvider`에만 있다                                         | 생성자가 하나라 필요 없으므로 뺀다                                                                                                                                                                    |
+| S2  | `OrderController`, `WishController`, `KakaoMessageClient`는 `var`, member와 auth는 `final String`, 나머지는 명시 타입이다                                     | `var`와 `final`을 빼고 명시 타입으로 쓴다                                                                                                                                                             |
+| S3  | `KakaoAuthController`, `OptionController`는 `@RequestMapping(path = "...")`, `@GetMapping(path = "...")`를 쓴다                                               | `path =` 없이 쓴다                                                                                                                                                                                    |
+| S4  | `OptionController.getOptions`만 `.collect(Collectors.toList())`를 쓴다                                                                                        | `.toList()`                                                                                                                                                                                           |
+| S5  | `ResponseEntity.status(401)`, `status(403)`                                                                                                                   | `HttpStatus.UNAUTHORIZED`, `HttpStatus.FORBIDDEN`                                                                                                                                                     |
+| S6  | `OrderController`의 반환 타입이 `ResponseEntity<?>`다                                                                                                         | `ResponseEntity<Page<OrderResponse>>`, `ResponseEntity<OrderResponse>`                                                                                                                                |
+| S7  | member와 auth는 Javadoc에 `@author brian.kim`, `@since 1.0`을 적고, `KakaoAuthController`, `OptionController`, `OptionNameValidator`는 `/* */`, 나머지는 없다 | `@author`, `@since`를 빼고 규칙 설명만 Javadoc으로 남긴다. 세부는 [2단계 작업 목록](02-code-style/tasks.md)에 있다. 주석이 없는 클래스에 새로 달지 않고, `JwtProvider`의 메서드 Javadoc은 그대로 둔다 |
+| S8  | `"Authorization"`, `"Content-Type"`, `"Bearer "`를 문자열로 쓴다                                                                                              | `HttpHeaders.AUTHORIZATION`, `HttpHeaders.CONTENT_TYPE`, `MediaType.APPLICATION_FORM_URLENCODED_VALUE`. `"Bearer "`는 그대로 두고 4단계에서 본다                                                      |
+| S9  | `ProductController.validateName`과 `OptionController.validateName`이 같은 모양이다                                                                            | 각 Service로 옮긴다                                                                                                                                                                                   |
 
 ### 3단계 Service 구성
 
