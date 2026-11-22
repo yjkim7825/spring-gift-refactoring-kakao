@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-/*
+/**
  * Handles the Kakao OAuth2 login flow.
  * 1. /login redirects the user to Kakao's authorization page
  * 2. /callback receives the authorization code, exchanges it for an access token,
