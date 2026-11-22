@@ -67,7 +67,7 @@
 - 스택: Java 21, Spring Boot 3.5, JPA, Flyway, Thymeleaf, JWT. Kotlin 플러그인이 있지만 코드는 모두 Java다.
 - 코드: `src/main/java/gift/` 아래에 도메인별 패키지가 있다(auth, member, category, product, option, wish, order).
 - 실행: `./gradlew bootRun` (Windows는 `gradlew.bat bootRun`). DB는 내장 H2이고, 시작할 때 Flyway가 테이블과 초기 데이터를 만든다.
-- 테스트: `./gradlew test`. 아직 테스트가 없다.
+- 테스트: `./gradlew test`. 인수 테스트는 Cucumber로 `src/test/resources/features/`에 스토리별로 있고, 스텝 정의는 `src/test/java/gift/acceptance/`에 있다.
 - 환경 변수: `KAKAO_CLIENT_ID`, `KAKAO_CLIENT_SECRET`, `KAKAO_REDIRECT_URI`, `JWT_SECRET`, `JWT_EXPIRATION`.
 - 문서 도구: Python으로 실행한다. Windows는 `py -I`, 그 밖에는 `python3 -I`.
 
