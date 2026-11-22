@@ -148,7 +148,7 @@
 3. 해결한 안건과 모순은 그 문서에서 지우고, 다른 문서에 있던 링크도 함께 정리한다.
 4. 스토리나 용어가 바뀌었으면 이 파일의 인덱스를 고친다.
 5. 아래 두 명령이 모두 아무것도 출력하지 않을 때까지 고친다.
-   - `py -I tools/align_md_tables.py --check docs/*.md CLAUDE.md`
-   - `py -I tools/check_doc_style.py docs/*.md CLAUDE.md`
+   - `py -I tools/align_md_tables.py --check docs/*.md docs/work/*.md docs/work/*/*.md CLAUDE.md`
+   - `py -I tools/check_doc_style.py docs/*.md docs/work/*.md docs/work/*/*.md CLAUDE.md`
 6. 문서 변경은 코드 변경과 같은 커밋에 넣는다.
 7. 고칠 문서가 없다고 판단했으면 그 이유를 커밋 전에 한 줄로 말한다.
