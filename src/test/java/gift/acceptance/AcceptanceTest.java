@@ -10,6 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
     @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
 @CucumberContextConfiguration
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = "spring.flyway.clean-disabled=false"
+)
 public class AcceptanceTest {
 }

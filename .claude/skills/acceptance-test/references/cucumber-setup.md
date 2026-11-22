@@ -41,7 +41,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
 @CucumberContextConfiguration
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = "spring.flyway.clean-disabled=false"
+)
 public class AcceptanceTest {
 }
 ```
@@ -50,6 +53,30 @@ public class AcceptanceTest {
 - glue는 지정하지 않는다. 지정하지 않으면 클래스패스 전체에서 스텝을 찾는다.
 - `abstract`로 만들지 않는다. 실행 대상에서 빠져서 0건으로 통과한다.
 - feature 파일은 `src/test/resources/features/`에 둔다.
+
+## DatabaseHooks
+
+시나리오마다 DB를 지우고 Flyway 마이그레이션으로 다시 만들어 초기 데이터로 되돌린다.
+
+`src/test/java/gift/acceptance/DatabaseHooks.java`
+
+```java
+public class DatabaseHooks {
+    @Autowired
+    private Flyway flyway;
+
+    @Before
+    public void 초기_데이터로_되돌린다() {
+        flyway.clean();
+        flyway.migrate();
+    }
+}
+```
+
+- `@Before`는 `io.cucumber.java.Before`다. JUnit의 것이 아니다.
+- Flyway는 clean을 기본으로 막아 둔다. 그래서 `AcceptanceTest`의 `properties`로 테스트에서만 푼다. `src/test/resources/application.properties`에 두면 `src/main`의 설정 파일 전체를 가려서 JWT, 카카오 설정이 사라진다.
+- 앱이 시작할 때와 같은 마이그레이션을 쓰므로 초기 데이터를 테스트에 따로 적지 않고, 번호도 1부터 다시 붙는다. 시나리오마다 약 0.1초가 더 든다.
+- `@Transactional` 롤백은 쓸 수 없다. 실제 서버는 다른 스레드에서 요청을 처리한다.
 
 ## 첫 스텝 정의 예시
 
