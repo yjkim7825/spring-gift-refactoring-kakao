@@ -1,6 +1,7 @@
 package gift.acceptance;
 
 import com.jayway.jsonpath.JsonPath;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,43 @@ public class WishSteps {
         addWish(999999L);
     }
 
+    @When("내 위시를 본다")
+    public void 내_위시를_본다() {
+        response = wishes("size=100");
+    }
+
+    @When("내 위시를 한 페이지에 {int}개씩 나눠 첫 페이지를 본다")
+    public void 내_위시를_나눠_첫_페이지를_본다(int size) {
+        response = wishes("page=0&size=" + size);
+    }
+
+    @Then("위시 항목 {int}개가 보인다")
+    public void 위시_항목이_보인다(int count) {
+        List<Object> content = JsonPath.read(response.getBody(), "$.content");
+        assertThat(content).hasSize(count);
+    }
+
+    @Then("전체 위시 항목은 {int}개이고 모두 {int}페이지다")
+    public void 전체_위시_항목은_개이고_모두_페이지다(int totalElements, int totalPages) {
+        Integer actualTotalElements = JsonPath.read(response.getBody(), "$.totalElements");
+        Integer actualTotalPages = JsonPath.read(response.getBody(), "$.totalPages");
+        assertThat(actualTotalElements).isEqualTo(totalElements);
+        assertThat(actualTotalPages).isEqualTo(totalPages);
+    }
+
+    @Then("위시 항목은 다음과 같다")
+    public void 위시_항목은_다음과_같다(DataTable table) {
+        List<Map<String, Object>> content = JsonPath.read(response.getBody(), "$.content");
+        List<Map<String, String>> actual = content.stream()
+            .map(wish -> Map.of(
+                "이름", String.valueOf(wish.get("name")),
+                "가격", String.valueOf(wish.get("price")),
+                "이미지", String.valueOf(wish.get("imageUrl"))
+            ))
+            .toList();
+        assertThat(actual).containsExactlyInAnyOrderElementsOf(table.asMaps());
+    }
+
     @Then("{string} 상품이 위시에 담긴다")
     public void 상품이_위시에_담긴다(String productName) {
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
@@ -67,7 +105,11 @@ public class WishSteps {
     }
 
     private String myWishes() {
+        return wishes("size=100").getBody();
+    }
+
+    private ResponseEntity<String> wishes(String query) {
         return restTemplate.exchange(
-            "/api/wishes?size=100", HttpMethod.GET, loggedInMember.request(null), String.class).getBody();
+            "/api/wishes?" + query, HttpMethod.GET, loggedInMember.request(null), String.class);
     }
 }
