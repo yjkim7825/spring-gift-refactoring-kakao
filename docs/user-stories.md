@@ -201,7 +201,7 @@
 
 ### 그 밖의 세부 동작
 
-- 로그인 실패를 `401`이 아니라 `400`으로 돌려준다(`MemberController.handleIllegalArgument`).
+- 로그인 실패를 `401`이 아니라 `400`으로 돌려준다(`MemberController.handleIllegalArgument`, [#20](agenda.md#고칠지-정할-동작)).
 - 카테고리 이름이 중복이면 DB 제약 위반으로 `500`이 예상된다(확인 필요).
 - 옵션을 삭제할 때 옵션 수를 확인하는 단계가, 그 옵션이 해당 상품의 것인지 확인하는 단계보다 먼저 실행된다(`OptionController.deleteOption`).
 - 카카오 사용자 정보에 이메일이 없으면(동의 거부 등) `KakaoUserResponse.email()`에서 예외가 날 수 있다(확인 필요).
